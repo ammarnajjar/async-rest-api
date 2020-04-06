@@ -1,0 +1,17 @@
+[flake8]
+ignore = E221,E241
+exclude =
+    build,
+    dist,
+	.coverage,
+	.coveragerc,
+	.envrc,
+	.git,
+	.github,
+	.mypy_cache,
+	.pytest_cache,
+	.tox,
+	__pycache__,
+	requirements.txt,
+	tox.ini,
+	venv
