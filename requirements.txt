@@ -1,7 +1,10 @@
+asyncpg
+databases[postgresql]
 fastapi
 flake8
 pre-commit
 pytest
 pytest-cov
 requests
+SQLAlchemy
 uvicorn
