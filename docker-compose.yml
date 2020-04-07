@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  web:
+    build: .
+    command: uvicorn async_rest_api.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./:/usr/src/
+    ports:
+      - 3100:8000
+# docker-compose up -d --build
+# docker-compose exec web pytest .

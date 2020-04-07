@@ -1,6 +1,9 @@
-def main() -> None:  # pragma no cover
-    ...
+from fastapi import FastAPI
 
 
-if __name__ == '__main__':  # pragma no cover
-    main()
+app = FastAPI()
+
+
+@app.get('/ping')
+def pong():
+    return {'ping': 'pong'}
