@@ -11,7 +11,7 @@ from sqlalchemy import Table
 from sqlalchemy.sql import func
 
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///:memory:')
 
 engine = create_engine(DATABASE_URL)
 metadata = MetaData()

@@ -1,10 +1,11 @@
+aiosqlite  # dev
 asyncpg
 databases[postgresql]
 fastapi
-flake8
-pre-commit
-pytest
-pytest-cov
-requests
+flake8  # dev
+pre-commit  # dev
+pytest  # dev
+pytest-cov  # dev
+requests  # dev
 SQLAlchemy
 uvicorn
