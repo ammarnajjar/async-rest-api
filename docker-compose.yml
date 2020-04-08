@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  web:
+    build: .
+    container_name: web
+    command: uvicorn async_rest_api.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./:/usr/src/
+    ports:
+      - 3100:8000
+    environment:
+      - DATABASE_URL=postgresql://fastapi:fastapi@db/fastapi_db
+
+  db:
+    image: postgres:12.2-alpine
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=fastapi
+      - POSTGRES_PASSWORD=fastapi
+      - POSTGRES_DB=fastapi_db
+
+volumes:
+  postgres_data:
+# docker-compose up -d --build
+# docker-compose exec web pytest .
+#  vim: set ft=yaml ts=2 sw=2 et ai :
