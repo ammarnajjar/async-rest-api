@@ -5,6 +5,7 @@ fastapi
 flake8  # dev
 pre-commit  # dev
 pytest  # dev
+pytest-asyncio  # dev
 pytest-cov  # dev
 requests  # dev
 SQLAlchemy
