@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from async_rest_api.api import notes
 from async_rest_api.api import ping
 from async_rest_api.db import database
 from async_rest_api.db import engine
@@ -20,3 +21,4 @@ async def shutdown() -> None:
 
 
 app.include_router(ping.router)
+app.include_router(notes.router, prefix='/notes', tags=['notes'])

@@ -3,6 +3,7 @@ version: "3.7"
 services:
   web:
     build: .
+    container_name: web
     command: uvicorn async_rest_api.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
     volumes:
       - ./:/usr/src/
@@ -13,6 +14,7 @@ services:
 
   db:
     image: postgres:12.2-alpine
+    container_name: db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:

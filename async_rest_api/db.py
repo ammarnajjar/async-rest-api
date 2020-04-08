@@ -19,7 +19,7 @@ metadata = MetaData()
 notes = Table(
     'notes',
     metadata,
-    Column('id', Integer, primery_key=True),
+    Column('id', Integer, primary_key=True),
     Column('title', String(50)),
     Column('description', String(50)),
     Column('created_date', DateTime, default=func.now(), nullable=False),
