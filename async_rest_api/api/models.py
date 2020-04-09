@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
 
-class NoteSchema(BaseModel):
-    title: str
-    description: str
+class NoteIn(BaseModel):
+    text: str
+    completed: bool
 
 
-class NoteDB(NoteSchema):
+class Note(NoteIn):
     id: int
