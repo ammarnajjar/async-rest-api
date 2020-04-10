@@ -1,10 +1,11 @@
 from pydantic import BaseModel
+from pydantic import Field
 
 
-class NoteSchema(BaseModel):
-    title: str
-    description: str
+class NoteIn(BaseModel):
+    text: str = Field(..., min_length=3, max_length=50)
+    completed: bool
 
 
-class NoteDB(NoteSchema):
+class Note(NoteIn):
     id: int
