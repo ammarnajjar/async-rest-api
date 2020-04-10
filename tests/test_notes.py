@@ -60,13 +60,24 @@ def test_create_note(
 
     monkeypatch.setattr(crud, 'post', mock_post)
     response = client.post('/notes/', data=json.dumps(mock_note_request))
-
     assert 201 == response.status_code
     assert mock_note_response == response.json()
 
 
 def test_create_note_invalid_json(client):
     response = client.post('/notes/', data=json.dumps({'text': 'somethong'}))
+    assert 422 == response.status_code
+
+    response = client.post(
+        '/notes/',
+        data=json.dumps({'text': '12', 'completed': False}),
+    )
+    assert 422 == response.status_code
+
+    response = client.post(
+        '/notes/',
+        data=json.dumps({'text': '1' * 51, 'completed': False}),
+    )
     assert 422 == response.status_code
 
 
@@ -81,7 +92,6 @@ def test_read_note(
 
     monkeypatch.setattr(crud, 'get', mock_get)
     response = client.get('/notes/1')
-
     assert 200 == response.status_code
     assert mock_note_response == response.json()
 
@@ -93,9 +103,11 @@ def test_read_note_incorrect_id(client, monkeypatch):
 
     monkeypatch.setattr(crud, 'get', mock_get)
     response = client.get('/notes/999')
-
     assert 404 == response.status_code
     assert 'Note not found' == response.json()['detail']
+
+    response = client.get('/notes/0')
+    assert 422 == response.status_code
 
 
 def test_read_all_notes(
@@ -108,8 +120,8 @@ def test_read_all_notes(
         return mock_all_notes_response
 
     monkeypatch.setattr(crud, 'get_all', mock_get_all)
-    response = client.get('/notes/')
 
+    response = client.get('/notes/')
     assert 200 == response.status_code
     assert mock_all_notes_response == response.json()
 
@@ -133,7 +145,6 @@ def test_update_note(
         '/notes/1/',
         data=json.dumps(mock_updated_note_response),
     )
-
     assert 200 == response.status_code
     assert mock_updated_note_response == response.json()
 
@@ -144,6 +155,9 @@ def test_update_note(
         (1, {}, 422),
         (1, {'text': 'foo'}, 422),
         (999, {'text': 'foo', 'completed': True}, 404),
+        (1, {'text': '1', 'completed': False}, 422),
+        (1, {'text': '1', 'completed': False}, 422),
+        (0, {'text': '123', 'completed': False}, 422),
     ],
 )
 def test_invalid_update_note(
@@ -158,11 +172,11 @@ def test_invalid_update_note(
         return None
 
     monkeypatch.setattr(crud, 'get', mock_get)
+
     response = client.put(
         f'/notes/{id}/',
         data=json.dumps(payload),
     )
-
     assert status_code == response.status_code
 
 
@@ -178,7 +192,6 @@ def test_delete_note(client, monkeypatch, mock_note_response):
     monkeypatch.setattr(crud, 'delete', mock_delete)
 
     response = client.delete('/notes/1/')
-
     assert 200 == response.status_code
     assert mock_note_response == response.json()
 
@@ -189,7 +202,10 @@ def test_delete_note_does_not_exists(client, monkeypatch):
         return None
 
     monkeypatch.setattr(crud, 'get', mock_get)
-    response = client.delete('/notes/999/')
 
+    response = client.delete('/notes/999/')
     assert 404 == response.status_code
     assert 'Note not found' == response.json()['detail']
+
+    response = client.delete('/notes/0/')
+    assert 422 == response.status_code
